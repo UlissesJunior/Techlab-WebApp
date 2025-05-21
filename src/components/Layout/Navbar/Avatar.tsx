@@ -1,0 +1,51 @@
+"use client"
+
+import { useRef, useState, useEffect } from "react"
+import Image from "next/image"
+
+export function Avatar() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-white transition"
+      >
+        <Image
+          src="/logo.svg"
+          alt="Avatar"
+          width={32}
+          height={32}
+          className="object-cover"
+        />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 rounded-md shadow-lg border border-zinc-200 dark:border-zinc-700 z-50">
+          <ul className="py-2 text-sm text-gray-800 dark:text-gray-100">
+            <li>
+              <a
+                href="/"
+                className="block px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              >
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
