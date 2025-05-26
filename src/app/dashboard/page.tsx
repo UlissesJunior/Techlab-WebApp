@@ -6,7 +6,7 @@ import { Navbar } from "@/components/Layout/Navbar/Navbar";
 import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
 import OperationsButton from "@/components/UI/OperationsButton";
-import { getLogoByBankName } from "@/statics/BanksStatics";
+import { getLogoByBankName } from "@/lib/banksUtils";
 
 export default function DashboardPage() {
   return (

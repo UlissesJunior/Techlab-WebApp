@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { getBackgroundByLogoName, getBankColor } from "@/statics/BanksStatics";
+import { getBackgroundByLogoName, getBankColor } from "@/lib/banksUtils";
 
 interface BalanceCardProps {
   icon: ReactNode;
