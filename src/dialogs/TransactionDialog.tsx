@@ -6,13 +6,18 @@ import DialogSelect from "@/components/UI/DialogSelect";
 import DialogButton from "@/components/UI/DialogButton";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { convertTransactionTypeToScreenType, formatAmount, handleAmountInput } from "@/lib/transactionDialogUtils";
+import { TransactionInterface } from "@/app/models/transaction";
 
 interface TransactionDialogProps {
   type: 'CREDITO' | 'DEBITO' | 'TRANSFERENCIA';
   open: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
+  onEdit?: (data: any) => void;
+  onDelete?: (id: string) => void;
   accounts: { id: string; name: string }[];
+  transaction?: TransactionInterface;
+  isEditing?: boolean;
 }
 
 export default function TransactionDialog({
@@ -20,7 +25,11 @@ export default function TransactionDialog({
   open,
   onClose,
   onSubmit,
+  onEdit,
+  onDelete,
   accounts,
+  isEditing = false,
+  transaction
 }: TransactionDialogProps) {
   const [amount, setAmount] = useState('100.00');
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -30,6 +39,16 @@ export default function TransactionDialog({
   const [isEditingAmount, setIsEditingAmount] = useState(false);
 
   const amountInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditing && transaction && open) {
+      setAmount(formatAmount(transaction.amount.toString()));
+      setDate(transaction.date ? new Date(transaction.date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10));
+      setDescription(transaction.description || '');
+      setAccountOriginId(transaction.accountOriginId || '');
+      setAccountDestinationId(transaction.accountDestinationId || '');
+    }
+  }, [isEditing, transaction, open]);
 
   const isTransfer = type === 'TRANSFERENCIA';
 
@@ -45,7 +64,7 @@ export default function TransactionDialog({
   };
 
   useEffect(() => {
-    if (open) {
+    if (open && !isEditing) {
       resetForm();
     }
   }, [open]);
@@ -82,8 +101,8 @@ export default function TransactionDialog({
     onClose();
   };
 
-  if(!open) return null;
-  
+  if (!open) return null;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className={`bg-background-2 w-full h-full flex flex-col
@@ -118,7 +137,7 @@ export default function TransactionDialog({
             onChange={(e) => setDate(e.target.value)}
             required
             label="Data"
-            className="dark:bg-neutral-800 border border-border text-color-1 font-semibold"
+            className="text-color-1 dark:bg-neutral-800 border border-border font-semibold"
           />
 
           {type === 'DEBITO' && (
@@ -129,7 +148,7 @@ export default function TransactionDialog({
               options={accounts}
               label="Conta de Origem"
               placeholder="Selecione a conta de origem"
-              className="dark:bg-neutral-800 border border-border text-color-1 font-semibold"
+              className="text-color-1 dark:bg-neutral-800 border border-border  font-semibold"
             />
           )}
 
@@ -141,7 +160,7 @@ export default function TransactionDialog({
               options={accounts}
               label="Conta de Origem"
               placeholder="Selecione a conta de destino"
-              className="dark:bg-neutral-800 border border-border text-color-1 font-semibold"
+              className="text-color-1 dark:bg-neutral-800 border border-border font-semibold"
             />
           )}
 
@@ -178,25 +197,57 @@ export default function TransactionDialog({
             className="dark:bg-neutral-800 border border-border text-color-1 font-semibold"
           />
         </form>
-
         <div className="p-6 pt-0 flex flex-col gap-3 w-full flex-shrink-0">
-          <DialogButton
-            type="button"
-            onClick={onClose}
-            className="bg-gray-800 dark:bg-neutral-800 text-white font-semibold"
-          >
-            Fechar
-          </DialogButton>
+          {isEditing ? (
+            <>
+              <DialogButton
+                type="button"
+                onClick={onClose}
+                className="bg-gray-800 dark:bg-neutral-800 text-white font-semibold cursor-pointer"
+              >
+                Fechar
+              </DialogButton>
+              <DialogButton
+                type="button"
+                onClick={(id: any) => {
+                  if (onDelete) {
+                    onDelete(id);
+                  }
+                  onClose();
+                }}
+                className="bg-red-600 text-white font-semibold hover:bg-red-700 transition cursor-pointer"
+              >
+                Excluir
+              </DialogButton>
+              <DialogButton
+                type="submit"
+                onClick={handleSubmit}
+                className="bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition cursor-pointer"
+              >
+                Editar
+              </DialogButton>
+            </>
+          ) : (
+            <>
+              <DialogButton
+                type="button"
+                onClick={onClose}
+                className="bg-gray-800 dark:bg-neutral-800 text-white font-semibold cursor-pointer"
+              >
+                Fechar
+              </DialogButton>
 
-          <DialogButton
-            type="submit"
-            onClick={handleSubmit}
-            className="bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition"
-          >
-            Confirmar
-          </DialogButton>
+              <DialogButton
+                type="submit"
+                onClick={handleSubmit}
+                className="bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition cursor-pointer"
+              >
+                Confirmar
+              </DialogButton>
+            </>
+          )}
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

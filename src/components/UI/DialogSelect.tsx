@@ -10,7 +10,7 @@ interface DialogSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement
 export default function DialogSelect({ options, placeholder, className, label, ...props }: DialogSelectProps) {
   return (
     <div className="w-full">
-       <label className="block mb-1">{label}</label>
+       <label className="block mb-1 text-color-1">{label}</label>
       <select
         className={`w-full p-3 rounded-md h-[56px] sm:h-[48px] ${className}`}
         {...props}
