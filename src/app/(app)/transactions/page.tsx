@@ -6,7 +6,7 @@ import moment from "moment"
 import 'moment/locale/pt-br'
 
 import { groupByDate, getMonthName, filterTransactionsByMonth, processTransactions } from '@/lib/transactionsPageUtils'
-import { TransactionInterface } from "@/app/models/transaction"
+import { TransactionInterface } from "@/models/transaction"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import TransactionDialog from "@/dialogs/TransactionDialog" 
 

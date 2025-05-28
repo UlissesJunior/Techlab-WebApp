@@ -1,4 +1,4 @@
-import { TransactionInterface } from "@/app/models/transaction"
+import { TransactionInterface } from "@/models/transaction"
 import moment from "moment"
 import 'moment/locale/pt-br'
 

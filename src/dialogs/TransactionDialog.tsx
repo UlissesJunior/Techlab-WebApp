@@ -6,7 +6,7 @@ import DialogSelect from "@/components/UI/DialogSelect";
 import DialogButton from "@/components/UI/DialogButton";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { convertTransactionTypeToScreenType, formatAmount, handleAmountInput } from "@/lib/transactionDialogUtils";
-import { TransactionInterface } from "@/app/models/transaction";
+import { TransactionInterface } from "@/models/transaction";
 
 interface TransactionDialogProps {
   type: 'CREDITO' | 'DEBITO' | 'TRANSFERENCIA';

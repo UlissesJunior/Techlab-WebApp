@@ -2,9 +2,12 @@
 
 import { useRef, useState, useEffect } from "react"
 import Image from "next/image"
+import { authController } from "@/controllers/AuthController"
+import { useRouter } from "next/navigation"
 
 export function Avatar() {
   const [open, setOpen] = useState(false)
+  const router = useRouter();
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -17,11 +20,17 @@ export function Avatar() {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
 
+  const handleLogout = () => {
+    authController.logout()
+    router.push("/login")
+    setOpen(false)
+  }
+
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-white transition"
+        className="w-8 h-8 rounded-full overflow-hidden border-transparent hover:border-white transition"
       >
         <Image
           src="/logo.svg"
@@ -37,7 +46,7 @@ export function Avatar() {
           <ul className="py-2 text-sm text-gray-800 dark:text-gray-100">
             <li>
               <a
-                href="/"
+                onClick={handleLogout}
                 className="block px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
                 Logout
