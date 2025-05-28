@@ -52,7 +52,6 @@ export default function OperationsButton() {
               >
                 {operation.label}
               </div>
-
               <button
                 onClick={() => handleOperationClick(operation.type as "DEBITO" | "CREDITO" | "TRANSFERENCIA")}
                 style={{
@@ -75,7 +74,7 @@ export default function OperationsButton() {
 
         <button
           onClick={() => setOpen(!open)}
-          className="p-4 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all active:scale-95 cursor-pointer"
+          className="p-4 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 hover:shadow-xl scale-95 transition-all sm:active:scale-95 cursor-pointer"
           aria-label="Abrir operações"
         >
           {open ? <X /> : <Plus />}

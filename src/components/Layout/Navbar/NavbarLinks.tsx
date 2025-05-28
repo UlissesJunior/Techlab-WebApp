@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 const links = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/minhas-financas", label: "Minhas Finanças" },
+  { href: "/transactions", label: "Minhas Transações" },
 ];
 
 export function NavbarLinks() {

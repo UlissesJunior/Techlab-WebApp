@@ -1,17 +1,20 @@
 import { cn } from "@/lib/utils"
 
 type Props = {
+  id?: string
   name: string
   email: string
   type: "entrada" | "saida"
   amount: number
+  className?: string
+  onClick: (id: string) => void
 }
 
-export default function TransactionItem({ name, email, type, amount }: Props) {
+export default function TransactionItem({ id, name, email, type, amount, className, onClick }: Props) {
   const isEntrada = type === "entrada"
 
   return (
-    <div className="flex items-center justify-between">
+    <div className={`flex items-center justify-between  ${className}`} onClick={() => onClick(id || "")}>
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-800 text-gray-900 dark:text-white flex items-center justify-center font-bold text-sm uppercase">
           {name[0]}
