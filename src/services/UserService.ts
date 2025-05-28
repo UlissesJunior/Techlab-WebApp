@@ -8,6 +8,11 @@ export class UserService {
     const response = await this.api.post('/users', data);
     return response.data;
   }
+
+  async uploadPhoto(userId: string, base64Photo: string) {
+    const response = await this.api.post(`/users/${userId}/photo`, { photo: base64Photo });
+    return response.data;
+  }
 }
 
 export const userService = new UserService();

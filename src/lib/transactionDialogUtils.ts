@@ -33,3 +33,15 @@ export const handleAmountInput = (input: string): string => {
   }
   return value;
 };
+
+export const amountStringToNumber = (
+  value: string,
+  thousandSeparator: string = '.',
+  decimalSeparator: string = ','
+) => {
+  const cleanedValue = value.replace(new RegExp(`\\${thousandSeparator}`, 'g'), '');
+
+  const standardizedValue = cleanedValue.replace(decimalSeparator, '.');
+
+  return parseFloat(standardizedValue);
+}

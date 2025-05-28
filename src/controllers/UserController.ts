@@ -19,6 +19,16 @@ export class UserController {
       return null;
     }
   }
+
+  async uploadPhoto(userId: string, base64Photo: string): Promise<void> {
+    try {
+      await userService.uploadPhoto(userId, base64Photo);
+      if (this.showToast) toast.success('Foto enviada com sucesso!');
+    } catch (error: any) {
+      if (this.showToast) toast.error(`Erro ao enviar foto: ${error.response?.data?.message || error.message}`);
+      throw error;
+    }
+  }
 }
 
 export const userController = new UserController();

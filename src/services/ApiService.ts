@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class ApiService {
   private instance = axios.create({
-    baseURL: 'localhost:3000/',
+    baseURL: 'https://miniature-capybara-x4q99qvpvj93prgw-3000.app.github.dev',
   });
 
   private token: string | null = null;
