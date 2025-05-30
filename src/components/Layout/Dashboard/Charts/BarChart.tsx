@@ -9,13 +9,13 @@ import * as drilldown from "highcharts/modules/drilldown"
 
 moment.locale("pt-br")
 
-type Transaction = {
+export type BarChartTransaction = {
   data: string // ISO 8601
   valor: number
 }
 
 interface BarChartProps {
-  transactions: Transaction[]
+  transactions: BarChartTransaction[]
 }
 
 interface SeriePrincipal {
@@ -65,7 +65,7 @@ export function BarChart({ transactions }: BarChartProps) {
     if (!acc[mes]) acc[mes] = []
     acc[mes].push(transacao)
     return acc
-  }, {} as Record<string, Transaction[]>)
+  }, {} as Record<string, BarChartTransaction[]>)
 
   const meses = Object.keys(agrupadoPorMes)
 

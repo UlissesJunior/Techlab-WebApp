@@ -5,7 +5,7 @@ interface BalanceCardProps {
   icon: ReactNode;
   title: string;
   value: string;
-  percentage: string;
+  type: string;
   bank?: string;
   metallic?: boolean;
   className?: string;
@@ -15,7 +15,7 @@ export function BalanceCard({
   icon,
   title,
   value,
-  percentage,
+  type,
   bank = '',
   metallic = false,
   className = ''
@@ -40,7 +40,7 @@ export function BalanceCard({
         </div>
       </div>
       <h2 className="text-2xl font-bold mt-2">{value}</h2>
-      <p className="text-xs opacity-80 mt-1">{percentage} desde o mês passado</p>
+      <p className="text-xs opacity-80 mt-1">{type}</p>
     </div>
   );
 }
