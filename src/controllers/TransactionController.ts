@@ -3,9 +3,13 @@ import { transactionService } from '../services/TransactionService';
 import { TransactionInterface } from '../models/transaction';
 
 export class TransactionController {
-  private showToast: boolean;
+   private showToast: boolean;
 
   constructor(showToast = true) {
+    this.showToast = showToast;
+  }
+
+  setShowToast(showToast: boolean) {
     this.showToast = showToast;
   }
 

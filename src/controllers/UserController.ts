@@ -9,6 +9,10 @@ export class UserController {
     this.showToast = showToast;
   }
 
+  setShowToast(showToast: boolean) {
+    this.showToast = showToast;
+  }
+
   async createUser(data: UserInterface): Promise<UserInterface | null> {
     try {
       const user = await userService.createUser(data);

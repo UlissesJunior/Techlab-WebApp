@@ -1,14 +1,52 @@
 "use client"
 
-import { BarChart } from "@/components/Layout/Dashboard/Charts/BarChart";
+import { AccountList } from "@/components/Layout/Dashboard/AccountList/AccountList";
+import { BarChart, BarChartTransaction } from "@/components/Layout/Dashboard/Charts/BarChart";
 import TransactionsList from "@/components/Layout/Dashboard/Transactions/TransactionsList";
 import { Navbar } from "@/components/Layout/Navbar/Navbar";
 import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
 import OperationsButton from "@/components/UI/OperationsButton";
+import { accountController } from "@/controllers/AccountController";
+import { transactionController } from "@/controllers/TransactionController";
 import { getLogoByBankName } from "@/lib/banksUtils";
+import { AccountInterface } from "@/models/account";
+import { TransactionInterface } from "@/models/transaction";
+import moment from "moment";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
+  const [accounts, setAccounts] = useState<AccountInterface[]>([]);
+  const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
+  const [barChartTransactions, setBarChartTransactions] = useState<BarChartTransaction[]>([]);
+  
+  useEffect(() => {
+    accountController.setShowToast(false)
+    
+    const fetchAccounts = async () => {
+      const accountsResponse = await accountController.getAccounts();
+      setAccounts(accountsResponse ?? []);
+    };
+    fetchAccounts();
+
+    transactionController.setShowToast(false);
+    const fetchLastTransactions = async () => {
+      const transactionsResponse = await transactionController.getTransactions({
+        startDate: moment().startOf('M').toISOString(),
+        endDate: moment().toISOString()
+      });
+      if (transactionsResponse) {
+        setTransactions(transactionsResponse);
+        const barChartData = transactionsResponse.map(transaction => ({
+          data: moment(transaction.date).format('YYYY-MM-DD'),
+          valor: transaction.amount,
+        }));
+        setBarChartTransactions(barChartData);
+      }
+    };
+    fetchLastTransactions();
+  }, []);
+
   return (
     <>
       <div className="flex items-center justify-between mb-6">
@@ -16,60 +54,15 @@ export default function DashboardPage() {
         <ApplyFiltersButton />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <BalanceCard
-          title="Saldo Total"
-          icon="$"
-          value="R$ 42.351,60"
-          percentage={"15.8"}
-        />
-
-        <BalanceCard
-          title="Nubank"
-          icon={getLogoByBankName("nubank")}
-          value="R$ 17.364,16"
-          percentage="41.0"
-          bank="nubank"
-          metallic
-        />
-
-        <BalanceCard
-          title="Itaú"
-          icon={getLogoByBankName("itau")}
-          value="R$ 12.028,65"
-          percentage="28.4"
-          bank="itau"
-          metallic
-        />
-
-        <BalanceCard
-          title="Bradesco"
-          icon={getLogoByBankName("bradesco")}
-          value="R$ 8.046,80"
-          percentage="19.0"
-          bank="bradesco"
-          metallic
-        />
-
-        <BalanceCard
-          title="Santander"
-          icon={getLogoByBankName("santander")}
-          value="R$ 4.911,99"
-          percentage="11.6"
-          bank="santander"
-          metallic
-        />
+       <AccountList accounts={accounts}/>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-background-3 rounded-2xl p-6 shadow-md">
-          <BarChart transactions={[
-            { data: "2023-01-20", valor: 200 },
-            { data: "2023-01-21", valor: 300 },
-            { data: "2023-02-09", valor: 400 },
-          ]} />
+          <BarChart transactions={barChartTransactions} />
         </div>
         <div className="bg-background-3 rounded-2xl p-6 shadow-md">
-          <TransactionsList />
+          <TransactionsList transactions={transactions.slice(0, 6)} />
         </div>
       </div>
     </>

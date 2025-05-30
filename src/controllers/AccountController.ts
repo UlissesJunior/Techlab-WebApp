@@ -9,6 +9,10 @@ export class AccountController {
     this.showToast = showToast;
   }
 
+  setShowToast(showToast: boolean) {
+    this.showToast = showToast;
+  }
+
   async createAccount(data: AccountInterface): Promise<AccountInterface | null> {
     try {
       const account = await accountService.createAccount(data);

@@ -86,7 +86,6 @@ export default function SignupPage() {
     });
 
     if (account) {
-      toast.success('Conta criada com sucesso!');
       router.push('/dashboard');
     }
   };
@@ -169,7 +168,7 @@ export default function SignupPage() {
             label="Tipo de Conta"
             options={[
               { id: 'CORRENTE', name: 'Corrente' },
-              { id: 'POUPANÇA', name: 'Poupança' },
+              { id: 'POUPANCA', name: 'Poupança' },
               { id: 'CREDITO', name: 'Crédito' },
               { id: 'INVESTIMENTO', name: 'Investimento' },
             ]}
