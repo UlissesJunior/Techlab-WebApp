@@ -6,7 +6,7 @@ import { AccountInterface } from "@/models/account";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export function AccountList({ accounts }: { accounts: AccountInterface[] }) {
+export function AccountList({ accounts, fetchAccounts }: { accounts: AccountInterface[], fetchAccounts: () => void }) {
   const [open, setOpen] = useState(false);
   if (!accounts || accounts.length === 0) {
     return (
@@ -30,7 +30,7 @@ export function AccountList({ accounts }: { accounts: AccountInterface[] }) {
       ))}
 
       <button
-        className="rounded-2xl p-4 shadow-lg transition-all duration-300 bg-background-3 dark:bg-card text-color-1 
+        className="rounded-2xl p-4 shadow-lg cursor-pointer transition-all duration-300 bg-background-3 dark:bg-card text-color-1 
     flex flex-col justify-between h-full w-full hover:opacity-90"
         onClick={() => setOpen(true)}
       >
@@ -43,7 +43,10 @@ export function AccountList({ accounts }: { accounts: AccountInterface[] }) {
           </div>
         </div>
       </button>
-      <AccountDialog open={open} onClose={() => setOpen(false)} />
+      <AccountDialog 
+        open={open} 
+        onClose={() => setOpen(false)}
+      />
     </>
   );
 }

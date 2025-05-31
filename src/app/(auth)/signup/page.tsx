@@ -28,7 +28,7 @@ export default function SignupPage() {
 
   const [accountName, setAccountName] = useState('');
   const [accountType, setAccountType] = useState<AccountType>('CORRENTE');
-  const [accountBalance, setAccountBalance] = useState<string | number>(0);
+  const [accountBalance, setAccountBalance] = useState<string | number>("0.00");
 
   const router = useRouter();
 
@@ -46,18 +46,18 @@ export default function SignupPage() {
     const createdUser = await userController.createUser({ name, email, password });
 
     if (createdUser) {
+      authController.setShowToast(false);
       const acessToken = await authController.login(email, password);
       if (acessToken) {
         setUser(createdUser);
         setStep(2);
       }
     }
+    authController.setShowToast(true);
   };
 
   const handlePhotoUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Foto selecionada:', photo);
-    console.log('Usuário:', user);
     if (photo && user) {
       const reader = new FileReader();
       reader.onloadend = async () => {

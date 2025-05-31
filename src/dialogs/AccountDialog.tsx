@@ -12,8 +12,9 @@ import {
   handleAmountInput,
 } from "@/lib/transactionDialogUtils";
 import { TransactionInterface } from "@/models/transaction";
-import { AccountType } from "@/models/account";
+import { AccountInterface, AccountType } from "@/models/account";
 import { accountController } from "@/controllers/AccountController";
+import { useAccounts } from "@/contexts/AccountsContext";
 
 interface AccountDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ export default function AccountDialog({
   const [accountType, setAccountType] = useState<AccountType>("CORRENTE");
   const [accountBalance, setAccountBalance] = useState<string | number>("0.00");
 
+  const { fetchAccounts } = useAccounts()
   useLockBodyScroll(open);
 
   const resetForm = () => {
@@ -46,6 +48,7 @@ export default function AccountDialog({
     });
     
     if(data) {
+        fetchAccounts();
         resetForm();
         onClose();
     }
@@ -66,7 +69,7 @@ export default function AccountDialog({
           <DialogInput
             label="Nome da Conta"
             type="text"
-            className="border border-border"
+            className="border border-border text-color-1"
             required
             value={accountName}
             onChange={(e) => setAccountName(e.target.value)}
@@ -80,13 +83,13 @@ export default function AccountDialog({
               { id: "INVESTIMENTO", name: "Investimento" },
             ]}
             placeholder="Selecione o tipo de conta"
-            className="border border-border"
+            className="border border-border text-color-1"
             onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           <DialogInput
             label="Saldo Inicial"
             type="text"
-            className="border border-border"
+            className="border border-border text-color-1"
             value={accountBalance}
             onChange={(e) =>
               setAccountBalance(formatAmount(handleAmountInput(e.target.value)))

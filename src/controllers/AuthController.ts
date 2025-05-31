@@ -9,6 +9,10 @@ export class AuthController {
     this.showToast = showToast;
   }
 
+  setShowToast(showToast: boolean) {
+    this.showToast = showToast;
+  }
+
   async login(email: string, password: string): Promise<string | null> {
     try {
       const data = await authService.login(email, password);

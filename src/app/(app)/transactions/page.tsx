@@ -11,7 +11,7 @@ import {
   filterTransactionsByMonth,
   processTransactions,
 } from "@/lib/transactionsPageUtils";
-import { TransactionInterface } from "@/models/transaction";
+import { TransactionInterface, TransactionResponse } from "@/models/transaction";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import TransactionDialog from "@/dialogs/TransactionDialog";
 import { transactionController } from "@/controllers/TransactionController";
@@ -31,10 +31,8 @@ export default function TransactionsPage({}: TransactionsPageProps) {
     month: today.month(),
   });
   const [isLoading, setIsLoading] = useState(false);
-
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] =
-    useState<TransactionInterface | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<TransactionResponse | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +77,7 @@ export default function TransactionsPage({}: TransactionsPageProps) {
   const displayMonth = getMonthName(currentMonth.month);
   const showYear = currentMonth.year !== today.year();
 
-  const handleTransactionClick = (transaction: TransactionInterface) => {
+  const handleTransactionClick = (transaction: TransactionResponse) => {
     setSelectedTransaction(transaction);
     setDialogOpen(true);
   };
@@ -133,23 +131,17 @@ export default function TransactionsPage({}: TransactionsPageProps) {
             <div className="space-y-2">
               {transactions.map((t) => {
                 const visualType = t.type === "DEBITO" ? "saida" : "entrada";
-                const email =
-                  t.type === "DEBITO"
-                    ? `Origem: ${t.accountOriginId || "N/A"}`
-                    : t.type === "CREDITO"
-                    ? `Destino: ${t.accountDestinationId || "N/A"}`
-                    : "N/A";
 
                 return (
                   <TransactionItem
                     id={t.id}
                     key={`${t.id}-${t.type}`}
                     name={t.description || visualType}
-                    email={email}
+                    email={t.type}
                     type={visualType as "entrada" | "saida"}
                     amount={t.amount}
                     className="rounded-2xl p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
-                    onClick={() => handleTransactionClick(t)}
+                    onClick={() => handleTransactionClick(t as unknown as TransactionResponse)}
                   />
                 );
               })}
@@ -164,13 +156,7 @@ export default function TransactionsPage({}: TransactionsPageProps) {
           open={dialogOpen}
           onClose={handleDialogClose}
           onSubmit={(data: any) => console.log("Submit", data)}
-          accounts={[
-            { id: "Conta A", name: "Conta A" },
-            { id: "Conta B", name: "Conta B" },
-          ]}
-          isEditing={true}
-          onEdit={(data: any) => console.log("Edit", data)}
-          onDelete={(id: any) => console.log("Delete", id)}
+          isViewing={true}
           transaction={selectedTransaction}
         />
       )}

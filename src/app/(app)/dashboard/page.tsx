@@ -1,51 +1,20 @@
 "use client"
 
 import { AccountList } from "@/components/Layout/Dashboard/AccountList/AccountList";
-import { BarChart, BarChartTransaction } from "@/components/Layout/Dashboard/Charts/BarChart";
+import { BarChart } from "@/components/Layout/Dashboard/Charts/BarChart";
 import TransactionsList from "@/components/Layout/Dashboard/Transactions/TransactionsList";
-import { Navbar } from "@/components/Layout/Navbar/Navbar";
 import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
-import OperationsButton from "@/components/UI/OperationsButton";
-import { accountController } from "@/controllers/AccountController";
-import { transactionController } from "@/controllers/TransactionController";
-import { getLogoByBankName } from "@/lib/banksUtils";
-import { AccountInterface } from "@/models/account";
-import { TransactionInterface } from "@/models/transaction";
-import moment from "moment";
-import { useEffect, useState } from "react";
+import { useAccounts } from "@/contexts/AccountsContext";
+import { useTransactions } from "@/contexts/TransactionsContext";
+import { processTransactions } from "@/lib/transactionsPageUtils";
 
 export default function DashboardPage() {
-  const [accounts, setAccounts] = useState<AccountInterface[]>([]);
-  const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
-  const [barChartTransactions, setBarChartTransactions] = useState<BarChartTransaction[]>([]);
-  
-  useEffect(() => {
-    accountController.setShowToast(false)
-    
-    const fetchAccounts = async () => {
-      const accountsResponse = await accountController.getAccounts();
-      setAccounts(accountsResponse ?? []);
-    };
-    fetchAccounts();
 
-    transactionController.setShowToast(false);
-    const fetchLastTransactions = async () => {
-      const transactionsResponse = await transactionController.getTransactions({
-        startDate: moment().startOf('M').toISOString(),
-        endDate: moment().toISOString()
-      });
-      if (transactionsResponse) {
-        setTransactions(transactionsResponse);
-        const barChartData = transactionsResponse.map(transaction => ({
-          data: moment(transaction.date).format('YYYY-MM-DD'),
-          valor: transaction.amount,
-        }));
-        setBarChartTransactions(barChartData);
-      }
-    };
-    fetchLastTransactions();
-  }, []);
+  const { accounts, totalAmount, fetchAccounts } = useAccounts();
+  const { transactions, barChartData } = useTransactions();
+
+  const transactionsListData = processTransactions(transactions)
 
   return (
     <>
@@ -54,15 +23,21 @@ export default function DashboardPage() {
         <ApplyFiltersButton />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-       <AccountList accounts={accounts}/>
+      <BalanceCard
+          title="Saldo Total"
+          icon="$"
+          value={totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+          type=""
+        />
+       <AccountList accounts={accounts} fetchAccounts={fetchAccounts}/>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-background-3 rounded-2xl p-6 shadow-md">
-          <BarChart transactions={barChartTransactions} />
+          <BarChart transactions={barChartData} />
         </div>
         <div className="bg-background-3 rounded-2xl p-6 shadow-md">
-          <TransactionsList transactions={transactions.slice(0, 6)} />
+          <TransactionsList transactions={transactionsListData} />
         </div>
       </div>
     </>
