@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Plus, X, ArrowDownLeft, ArrowUpRight, RefreshCcw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import TransactionDialog from "@/dialogs/TransactionDialog"
+import { useAccounts } from "@/contexts/AccountsContext"
+import { toast } from "react-toastify"
 
 const operations = [
   {
@@ -30,8 +32,14 @@ export default function OperationsButton() {
   const [open, setOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogType, setDialogType] = useState<"CREDITO" | "DEBITO" | "TRANSFERENCIA">("CREDITO")
+  
+  const accounts = useAccounts()
 
   const handleOperationClick = (type: "CREDITO" | "DEBITO" | "TRANSFERENCIA") => {
+    if(accounts.accounts.length < 2 && type === "TRANSFERENCIA") {
+      toast.info("Você precisa de pelo menos duas contas para realizar uma transferência.")
+      return
+    }
     setDialogType(type)
     setDialogOpen(true)
     setOpen(false)
@@ -89,10 +97,6 @@ export default function OperationsButton() {
           console.log(data)
           setDialogOpen(false)
         }}
-        accounts={[
-          { id: "1", name: "Conta Corrente" },
-          { id: "2", name: "Poupança" },
-        ]}
       />
     </>
   )

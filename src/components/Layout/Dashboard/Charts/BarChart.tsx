@@ -83,7 +83,7 @@ export function BarChart({ transactions }: BarChartProps) {
       },
     },
     title: {
-      text: "Gastos por período",
+      text: "Transações por período",
       style: { color: textColor },
     },
     xAxis: {

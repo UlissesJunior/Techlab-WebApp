@@ -30,7 +30,7 @@ export function Avatar() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-8 h-8 rounded-full overflow-hidden border-transparent hover:border-white transition"
+        className="w-8 h-8 rounded-full overflow-hidden cursor-pointer border-transparent hover:border-white transition"
       >
         <Image
           src="/logo.svg"
@@ -43,7 +43,7 @@ export function Avatar() {
 
       {open && (
         <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 rounded-md shadow-lg border border-zinc-200 dark:border-zinc-700 z-50">
-          <ul className="py-2 text-sm text-gray-800 dark:text-gray-100">
+          <ul className="py-2 text-sm text-gray-800 dark:text-gray-100 cursor-pointer">
             <li>
               <a
                 onClick={handleLogout}

@@ -64,7 +64,7 @@ export default function TransactionsList({
       </p>
 
       <div className="space-y-4">
-        {transactions.map((t) => {
+        {transactions.slice(0,5).map((t) => {
           const visualType = t.type === "DEBITO" ? "saida" : "entrada";
           const email =
             t.type === "DEBITO"

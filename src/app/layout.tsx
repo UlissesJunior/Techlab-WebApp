@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
   description: "WebApp para controle financeiro",
   icons: {
     icon: "/logo.svg",
-    shortcut: "/logo.svg"
-  }
+    shortcut: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -32,13 +33,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          pauseOnHover
-          theme="colored"
-        />
-        {children}
+        <AuthProvider>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            pauseOnHover
+            theme="colored"
+          />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
