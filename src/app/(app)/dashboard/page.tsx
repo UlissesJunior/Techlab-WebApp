@@ -7,6 +7,7 @@ import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { useTransactions } from "@/contexts/TransactionsContext";
+import { formatAmount } from "@/lib/transactionDialogUtils";
 import { processTransactions } from "@/lib/transactionsPageUtils";
 
 export default function DashboardPage() {
@@ -26,7 +27,7 @@ export default function DashboardPage() {
       <BalanceCard
           title="Saldo Total"
           icon="$"
-          value={totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+          value={formatAmount(totalAmount.toString())}
           type=""
         />
        <AccountList accounts={accounts} fetchAccounts={fetchAccounts}/>

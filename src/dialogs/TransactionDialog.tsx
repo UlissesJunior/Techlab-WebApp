@@ -77,20 +77,13 @@ export default function TransactionDialog({
       setAccountOptions(options);
     }
     if (isViewing && transaction) {
-      console.log("isViewing")
-      console.log(transaction)
       if(transaction.type === "CREDITO" && transaction?.accountDestination) {
-        console.log("credito e accountDestination")
         const option = transaction.accountDestination as any as AccountInterface
         setAccountOptions([{id: option.id || "", name: option.name}]);
         setPlaceholderWhenViewing(option.name);
     } else if(transaction.type === "DEBITO" && transaction?.accountOrigin) {
-      console.log("debito e accountDestination")
-
         const option = transaction.accountOrigin as any as AccountInterface
         setAccountOptions([{id: option.id || "", name: option.name}]);
-        console.log("option name")
-        console.log(option.name)
         setPlaceholderWhenViewing(option.name);
       }
     }

@@ -33,6 +33,17 @@ export class UserController {
       throw error;
     }
   }
+
+  async getMyPhoto(): Promise<string | null> {
+    try {
+      const photo = await userService.getMyPhoto();
+      if (this.showToast) toast.success('Foto carregada com sucesso!');
+      return photo;
+    } catch (error: any) {
+      if (this.showToast) toast.error(`Erro ao carregar foto: ${error.response?.data?.message || error.message}`);
+      return null;
+    }
+  }
 }
 
 export const userController = new UserController();

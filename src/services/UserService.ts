@@ -13,6 +13,16 @@ export class UserService {
     const response = await this.api.post(`/users/${userId}/photo`, { photo: base64Photo });
     return response.data;
   }
+
+  async getMyPhoto(): Promise<string | null> {
+    try {
+      const response = await this.api.get('/users/me/photo');
+      return response.data.photo;
+    } catch (error) {
+      console.error('Erro ao buscar foto do usuário:', error);
+      throw error;
+    }
+  }
 }
 
 export const userService = new UserService();
