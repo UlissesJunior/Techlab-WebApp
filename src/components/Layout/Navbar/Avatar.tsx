@@ -1,30 +1,49 @@
-"use client"
+"use client";
 
-import { useRef, useState, useEffect } from "react"
-import Image from "next/image"
-import { authController } from "@/controllers/AuthController"
-import { useRouter } from "next/navigation"
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import { authController } from "@/controllers/AuthController";
+import { useRouter } from "next/navigation";
+import { userController } from "@/controllers/UserController";
 
 export function Avatar() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [avatarImage, setAvatarImage] = useState("/user.png")
   const router = useRouter();
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        userController.setShowToast(false)
+        const image = await userController.getMyPhoto();
+        userController.setShowToast(true)
+        if (image !== null) {
+          const imageSrc = `data:image/jpeg;base64,${image}`;
+          setAvatarImage(imageSrc);
+        }
+      } catch (error) {
+        console.error("Failed to load avatar image:", error);
+      }
+    };
+    getImage();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    authController.logout()
-    router.push("/login")
-    setOpen(false)
-  }
+    authController.logout();
+    router.push("/login");
+    setOpen(false);
+  };
 
   return (
     <div className="relative" ref={ref}>
@@ -33,7 +52,7 @@ export function Avatar() {
         className="w-8 h-8 rounded-full overflow-hidden cursor-pointer border-transparent hover:border-white transition"
       >
         <Image
-          src="/logo.svg"
+          src={avatarImage}
           alt="Avatar"
           width={32}
           height={32}
@@ -56,5 +75,5 @@ export function Avatar() {
         </div>
       )}
     </div>
-  )
+  );
 }

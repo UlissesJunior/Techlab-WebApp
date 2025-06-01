@@ -39,7 +39,7 @@ export function BalanceCard({
           {icon}
         </div>
       </div>
-      <h2 className="text-2xl font-bold mt-2">{value}</h2>
+      <h2 className="text-2xl font-bold mt-2">R$ {value}</h2>
       <p className="text-xs opacity-80 mt-1">{type}</p>
     </div>
   );

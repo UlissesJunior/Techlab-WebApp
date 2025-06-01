@@ -1,7 +1,12 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
+import { AccountsProvider } from "@/contexts/AccountsContext";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="min-h-screen flex text-foreground">
       <div className="hidden md:flex w-1/2 bg-[#4F46E5] items-center justify-center">
