@@ -15,16 +15,14 @@ import { TransactionInterface, TransactionResponse } from "@/models/transaction"
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import TransactionDialog from "@/dialogs/TransactionDialog";
 import { transactionController } from "@/controllers/TransactionController";
+import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
+import FilterDialog from "@/dialogs/FilterDialog";
 
 interface TransactionsPageProps {}
 
-const mockFetchTransactions = async (): Promise<TransactionInterface[]> => {
-  const transactions = await transactionController.getTransactions({startDate: moment().startOf("month").toISOString(), endDate: moment().toISOString()});
-  return transactions ?? [];
-};
-
 export default function TransactionsPage({}: TransactionsPageProps) {
   const today = moment();
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
   const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
   const [currentMonth, setCurrentMonth] = useState({
     year: today.year(),
@@ -37,8 +35,8 @@ export default function TransactionsPage({}: TransactionsPageProps) {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const data = await mockFetchTransactions();
-      setTransactions(data);
+      const data = await transactionController.getTransactions({});
+      setTransactions(data ?? []);
       setIsLoading(false);
     };
     fetchData();
@@ -89,10 +87,13 @@ export default function TransactionsPage({}: TransactionsPageProps) {
 
   return (
     <div className="space-y-8">
+      <div className="flex items-center justify-between mb-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
         Minhas Transações
       </h1>
-
+      <ApplyFiltersButton onClick={() => setIsFilterDialogOpen(true)}/>
+      <FilterDialog open={isFilterDialogOpen} onClose={() => setIsFilterDialogOpen(false) } isTransactionsPage={true} setTransactions={setTransactions} />
+      </div>
       <div className="flex items-center sm:justify-center justify-between gap-4 sm:w-[300px] max-w-full w-full mx-auto">
         <button
           onClick={handlePrevMonth}
@@ -131,13 +132,20 @@ export default function TransactionsPage({}: TransactionsPageProps) {
             <div className="space-y-2">
               {transactions.map((t) => {
                 const visualType = t.type === "DEBITO" ? "saida" : "entrada";
+                const c = (t as unknown as TransactionResponse)
+                const conta =
+                  c.type === "DEBITO"
+                    ? `Conta de Origem: ${c.accountOrigin?.name || "N/A"}`
+                    : t.type === "CREDITO"
+                    ? `Conta de Destino: ${c.accountDestination?.name || "N/A"}`
+                    : "N/A";
 
                 return (
                   <TransactionItem
                     id={t.id}
                     key={`${t.id}-${t.type}`}
                     name={t.description || visualType}
-                    email={t.type}
+                    email={conta}
                     type={visualType as "entrada" | "saida"}
                     amount={t.amount}
                     className="rounded-2xl p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"

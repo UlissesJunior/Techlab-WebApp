@@ -7,10 +7,13 @@ import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { useTransactions } from "@/contexts/TransactionsContext";
+import FilterDialog from "@/dialogs/FilterDialog";
 import { formatAmount } from "@/lib/transactionDialogUtils";
 import { processTransactions } from "@/lib/transactionsPageUtils";
+import { useState } from "react";
 
 export default function DashboardPage() {
+  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
 
   const { accounts, totalAmount, fetchAccounts } = useAccounts();
   const { transactions, barChartData } = useTransactions();
@@ -21,7 +24,8 @@ export default function DashboardPage() {
     <>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl text-color-1 font-bold">Dashboard</h1>
-        <ApplyFiltersButton />
+        <ApplyFiltersButton onClick={() => setIsFilterDialogOpen(true)}/>
+        <FilterDialog open={isFilterDialogOpen} onClose={() => setIsFilterDialogOpen(false)} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <BalanceCard

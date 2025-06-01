@@ -45,7 +45,9 @@ export default function SignupPage() {
 
       const checkAccountsAndRedirect = async () => {
         try {
+          accountController.setShowToast(false);
           const accounts = await accountController.getAccounts();
+          accountController.setShowToast(true);
           if (accounts?.length === 0) {
             setStep(3);
           } else {
@@ -88,7 +90,9 @@ export default function SignupPage() {
         const base64String = reader.result?.toString().split(",")[1];
         try {
           if (user.id) {
+            userController.setShowToast(false);
             await userController.uploadPhoto(user.id, base64String!);
+            userController.setShowToast(true);
           }
         } finally {
           setStep(3);
