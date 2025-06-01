@@ -3,51 +3,6 @@
 import { TransactionInterface, TransactionResponse } from "@/models/transaction";
 import TransactionItem from "./TransactionsItem";
 
-const MOCK_TRANSACTIONS = [
-  {
-    id: 1,
-    name: "Pix José",
-    email: "jose@email.com",
-    type: "entrada",
-    amount: 1999.0,
-  },
-  {
-    id: 2,
-    name: "Lanche RU",
-    email: "ru@email.com",
-    type: "saida",
-    amount: 39.0,
-  },
-  {
-    id: 3,
-    name: "Transferência Entrada",
-    email: "eu@email.com",
-    type: "entrada",
-    amount: 299.0,
-  },
-  {
-    id: 4,
-    name: "Transferência Saída",
-    email: "eu@email.com",
-    type: "saida",
-    amount: 299.0,
-  },
-  {
-    id: 5,
-    name: "Transferência Entrada",
-    email: "eu@email.com",
-    type: "entrada",
-    amount: 299.0,
-  },
-  {
-    id: 6,
-    name: "Transferência Saída",
-    email: "eu@email.com",
-    type: "saida",
-    amount: 300.0,
-  },
-];
-
 export default function TransactionsList({
   transactions,
 }: {
