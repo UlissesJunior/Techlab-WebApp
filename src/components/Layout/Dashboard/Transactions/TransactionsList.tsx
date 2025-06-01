@@ -1,6 +1,6 @@
 "use client";
 
-import { TransactionInterface } from "@/models/transaction";
+import { TransactionInterface, TransactionResponse } from "@/models/transaction";
 import TransactionItem from "./TransactionsItem";
 
 const MOCK_TRANSACTIONS = [
@@ -60,17 +60,18 @@ export default function TransactionsList({
         Transações Recentes
       </h2>
       <p className="text-sm text-gray-500 dark:text-muted-foreground mb-4">
-        Você fez {transactions.length} transações esse mês
+        Você fez {transactions.length} {transactions.length === 1 ? "transação" : "transações"} esse mês
       </p>
 
       <div className="space-y-4">
         {transactions.slice(0,5).map((t) => {
           const visualType = t.type === "DEBITO" ? "saida" : "entrada";
-          const email =
-            t.type === "DEBITO"
-              ? `Origem: ${t.accountOriginId || "N/A"}`
+          const c = (t as unknown as TransactionResponse)
+          const conta =
+            c.type === "DEBITO"
+              ? `Conta de Origem: ${c.accountOrigin?.name || "N/A"}`
               : t.type === "CREDITO"
-              ? `Destino: ${t.accountDestinationId || "N/A"}`
+              ? `Conta de Destino: ${c.accountDestination?.name || "N/A"}`
               : "N/A";
 
           return (
@@ -78,11 +79,11 @@ export default function TransactionsList({
               id={t.id}
               key={`${t.id}-${t.type}`}
               name={t.description || visualType}
-              email={email}
+              email={conta}
               type={visualType as "entrada" | "saida"}
               amount={t.amount}
               className="rounded-2xl p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
-              onClick={() => console.log(`Clicked transaction ${t.id}`)}
+              onClick={() => {}}
             />
           );
         })}
