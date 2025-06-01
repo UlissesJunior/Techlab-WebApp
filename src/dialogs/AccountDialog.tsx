@@ -57,7 +57,8 @@ export default function AccountDialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    data-testid="account-dialog-container">
       <div
         className={`bg-background-2 w-full h-full flex flex-col
                     sm:rounded-3xl sm:mx-4 sm:my-8 sm:w-[400px] sm:h-[460px] sm:max-h-[95vh] sm:overflow-hidden`}
@@ -67,6 +68,7 @@ export default function AccountDialog({
           className="flex flex-col sm:gap-3 gap-8 p-6 flex-grow overflow-y-auto"
         >
           <DialogInput
+           id="nomeConta"
             label="Nome da Conta"
             type="text"
             className="border border-border text-color-1"
@@ -75,6 +77,7 @@ export default function AccountDialog({
             onChange={(e) => setAccountName(e.target.value)}
           />
           <DialogSelect
+            id="tipoConta"
             label="Tipo de Conta"
             options={[
               { id: "CORRENTE", name: "Corrente" },
@@ -87,6 +90,7 @@ export default function AccountDialog({
             onChange={(e) => setAccountType(e.target.value as AccountType)}
           />
           <DialogInput
+            id="saldoInicial"
             label="Saldo Inicial"
             type="text"
             className="border border-border text-color-1"

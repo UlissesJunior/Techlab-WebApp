@@ -21,7 +21,7 @@ interface TransactionDialogProps {
   type: "CREDITO" | "DEBITO" | "TRANSFERENCIA";
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit?: (data: any) => void;
   transaction?: TransactionResponse;
   isViewing?: boolean;
 }
@@ -171,6 +171,7 @@ export default function TransactionDialog({
         <form
           onSubmit={handleSubmit}
           className="flex flex-col sm:gap-3 gap-8 p-6 flex-grow overflow-y-auto"
+          data-testid="transaction-form"
         >
           <DialogInput
             type="date"
