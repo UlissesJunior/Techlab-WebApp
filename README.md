@@ -195,6 +195,13 @@ A aplicação estará disponível em `http://localhost:3000`.
 
 Antes de executar qualquer ação no front, verifique como iniciar o servidor do backend no [LINK](https://github.com/UlissesJunior/Techlab-WebApp-Backend/blob/main/README.md).Certifique-se de que o backend esteja rodando antes de iniciar o frontend, pois a aplicação web depende da API para carregar e gerenciar os dados.
 
+Para rodar os testes:
+
+```bash
+
+npm run test
+
+```
 
 ## Agradecimentos
 
