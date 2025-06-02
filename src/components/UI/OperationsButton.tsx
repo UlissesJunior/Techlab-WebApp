@@ -32,11 +32,11 @@ export default function OperationsButton() {
   const [open, setOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogType, setDialogType] = useState<"CREDITO" | "DEBITO" | "TRANSFERENCIA">("CREDITO")
-  
+
   const accounts = useAccounts()
 
   const handleOperationClick = (type: "CREDITO" | "DEBITO" | "TRANSFERENCIA") => {
-    if(accounts.accounts.length < 2 && type === "TRANSFERENCIA") {
+    if (accounts.accounts.length < 2 && type === "TRANSFERENCIA") {
       toast.info("Você precisa de pelo menos duas contas para realizar uma transferência.")
       return
     }
@@ -51,13 +51,12 @@ export default function OperationsButton() {
         <div className="flex flex-col items-center gap-2 transition-all">
           {operations.map((operation, index) => (
             <div className="relative group" key={index}>
-              <div
-                className={cn(
-                  "absolute right-full mr-2 top-1/2 -translate-y-1/2 transition-opacity text-sm bg-white text-zinc-800 dark:bg-zinc-900 dark:text-white rounded-md px-3 py-1 shadow-lg z-10 whitespace-nowrap",
-                  open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-                  "md:opacity-0 md:pointer-events-none md:group-hover:opacity-100 md:group-hover:pointer-events-auto"
-                )}
-              >
+              <div className={cn(
+                "absolute right-full mr-2 top-1/2 -translate-y-1/2 transition-opacity text-sm bg-white text-zinc-800 dark:bg-zinc-900 dark:text-white rounded-md px-3 py-1 shadow-lg z-10 whitespace-nowrap",
+                open
+                  ? "opacity-100 pointer-events-auto md:group-hover:opacity-100 md:group-hover:pointer-events-auto"
+                  : "opacity-0 pointer-events-none"
+              )}>
                 {operation.label}
               </div>
               <button
@@ -94,7 +93,6 @@ export default function OperationsButton() {
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
         onSubmit={(data: any) => {
-          console.log(data)
           setDialogOpen(false)
         }}
       />

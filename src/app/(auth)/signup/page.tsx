@@ -46,7 +46,6 @@ export default function SignupPage() {
         try {
           accountController.setShowToast(false);
           const accounts = await accountController.getAccounts();
-          accountController.setShowToast(true);
           if (accounts?.length === 0) {
             setStep(3);
           } else {
@@ -115,7 +114,6 @@ export default function SignupPage() {
     if (account) {
       router.push("/dashboard");
     }
-    accountController.setShowToast(true);
   };
 
   const renderStep3Content = () => (

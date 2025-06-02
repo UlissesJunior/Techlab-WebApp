@@ -17,11 +17,10 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     if (!isLoading && !isAuthenticated) {
       router.push('/login');
     }
+    if (isLoading) {
+      toast.info('Verificando autenticação...')
+    }
   }, [isAuthenticated, isLoading, router]);
-
-  if (isLoading) {
-    toast.info('Verificando autenticação...')
-  }
 
   if (!isAuthenticated) {
     return null; 

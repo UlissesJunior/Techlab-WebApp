@@ -16,10 +16,10 @@ export class TransactionController {
   async createTransaction(data: Omit<TransactionInterface, 'id' | 'date'>): Promise<TransactionInterface | null> {
     try {
       const transaction = await transactionService.createTransaction(data);
-      if (this.showToast) toast.success('Transação realizada com sucesso!');
+      toast.success('Transação realizada com sucesso!');
       return transaction;
     } catch (error: any) {
-      if (this.showToast) toast.error(`Erro ao criar transação: ${error.response?.data?.message || error.message}`);
+      toast.error(`Erro ao criar transação: ${error.response?.data?.message || error.message}`);
       return null;
     }
   }

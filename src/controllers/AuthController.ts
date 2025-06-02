@@ -19,8 +19,8 @@ export class AuthController {
       apiService.setToken(data.accessToken);
 
       const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
-      sessionStorage.setItem('accessToken', data.accessToken);
-      sessionStorage.setItem('accessTokenExpiresAt', expiresAt.toString());
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('accessTokenExpiresAt', expiresAt.toString());
 
       if (this.showToast) toast.success('Login realizado com sucesso!');
       return data.accessToken;
@@ -32,14 +32,14 @@ export class AuthController {
 
   logout() {
     apiService.clearToken();
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('accessTokenExpiresAt');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessTokenExpiresAt');
     if (this.showToast) toast.info('Logout realizado com sucesso!');
   }
 
   isAuthenticated(): boolean {
-    const token = sessionStorage.getItem('accessToken');
-    const expiresAt = sessionStorage.getItem('accessTokenExpiresAt');
+    const token = localStorage.getItem('accessToken');
+    const expiresAt = localStorage.getItem('accessTokenExpiresAt');
 
     if (!token || !expiresAt) return false;
 
@@ -53,12 +53,12 @@ export class AuthController {
 
   getToken(): string | null {
     if (!this.isAuthenticated()) return null;
-    return sessionStorage.getItem('accessToken');
+    return localStorage.getItem('accessToken');
   }
 
   getValidToken(): string | null {
-    const token = sessionStorage.getItem('accessToken');
-    const expiresAt = sessionStorage.getItem('accessTokenExpiresAt');
+    const token = localStorage.getItem('accessToken');
+    const expiresAt = localStorage.getItem('accessTokenExpiresAt');
 
     if (!token || !expiresAt) return null;
 

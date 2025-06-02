@@ -45,7 +45,7 @@ export default function FilterDialog({
     e.preventDefault();
 
     if (isTransactionsPage) {
-      if(selectedAccount !== "") {
+      if(selectedAccount !== "" && selectedAccount !== "null") {
         const response = await transactionController.getTransactions({
           accountId: selectedAccount,
         });
@@ -68,7 +68,7 @@ export default function FilterDialog({
           : undefined,
       });
     }
-
+    toast.success("Filtros aplicados com sucesso!");
     onClose();
   };
 
@@ -107,7 +107,7 @@ export default function FilterDialog({
             <DialogSelect
               label="Conta"
               options={[
-                { id: "", name: "Selecione as contas" },
+                { id: "null", name: "Selecione as contas" },
                 { id: "", name: "Todas as contas" },
                 ...accounts.map((account) => ({
                   id: account.id || "",
