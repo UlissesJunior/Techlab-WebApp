@@ -17,7 +17,6 @@ export function Avatar() {
       try {
         userController.setShowToast(false)
         const image = await userController.getMyPhoto();
-        userController.setShowToast(true)
         if (image !== null) {
           const imageSrc = `data:image/jpeg;base64,${image}`;
           setAvatarImage(imageSrc);

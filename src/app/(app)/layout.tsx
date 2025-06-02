@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <AccountsProvider>
           <TransactionsProvider>
             <Navbar />
-            <main className="p-6 md:p-8 lg:p-10 xl:p-12 bg-background min-h-screen text-white">
+            <main className="p-6 md:p-8 lg:p-10 xl:p-12 bg-background text-white">
               {children}
             </main>
             <OperationsButton />

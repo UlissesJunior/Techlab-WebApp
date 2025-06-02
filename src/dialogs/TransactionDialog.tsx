@@ -16,6 +16,7 @@ import { useAccounts } from "@/contexts/AccountsContext";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { AccountInterface } from "@/models/account";
+import { format } from "path";
 
 interface TransactionDialogProps {
   type: "CREDITO" | "DEBITO" | "TRANSFERENCIA";
@@ -86,6 +87,9 @@ export default function TransactionDialog({
         setAccountOptions([{id: option.id || "", name: option.name}]);
         setPlaceholderWhenViewing(option.name);
       }
+      setDescription(transaction.description || "");
+      setDate(moment(transaction.date).format("YYYY-MM-DD"));
+      setAmount(String(transaction.amount));
     }
   }, [open, accounts]);
 
@@ -129,6 +133,8 @@ export default function TransactionDialog({
       onClose();
     }
   };
+
+  console.log(transaction)
 
   if (!open) return null;
 

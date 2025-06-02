@@ -17,7 +17,7 @@ export default function LoginPage() {
     const token = authController.getValidToken();
     if (token) {
       apiService.setToken(token);
-      router.push('/dashboard');
+      router.push("/dashboard");
     }
   }, []);
 

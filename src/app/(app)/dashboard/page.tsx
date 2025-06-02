@@ -7,6 +7,8 @@ import ApplyFiltersButton from "@/components/UI/ApplyFiltersButton";
 import { BalanceCard } from "@/components/UI/BalanceCard";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { useTransactions } from "@/contexts/TransactionsContext";
+import { accountController } from "@/controllers/AccountController";
+import { transactionController } from "@/controllers/TransactionController";
 import FilterDialog from "@/dialogs/FilterDialog";
 import { formatAmount } from "@/lib/transactionDialogUtils";
 import { processTransactions } from "@/lib/transactionsPageUtils";
@@ -19,6 +21,9 @@ export default function DashboardPage() {
   const { transactions, barChartData } = useTransactions();
 
   const transactionsListData = processTransactions(transactions)
+
+  accountController.setShowToast(false);
+  transactionController.setShowToast(false);
 
   return (
     <>
