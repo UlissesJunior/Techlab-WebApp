@@ -19,6 +19,7 @@ import { authController } from "@/controllers/AuthController";
 import ImageUpload from "@/components/UI/ImageUpload";
 import { apiService } from "@/services/ApiService";
 import { AccountsProvider } from "@/contexts/AccountsContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SignupPage() {
   const [step, setStep] = useState(1);
@@ -35,10 +36,9 @@ export default function SignupPage() {
   const [accountBalance, setAccountBalance] = useState<string | number>("0.00");
 
   const router = useRouter();
+  const {token, login} = useAuth();
 
   useEffect(() => {
-    const token = authController.getValidToken();
-
     if (token) {
       apiService.setToken(token);
 
@@ -70,14 +70,14 @@ export default function SignupPage() {
     });
 
     if (createdUser) {
-      authController.setShowToast(false);
-      const acessToken = await authController.login(email, password);
+      // authController.setShowToast(false);
+      const acessToken = await login(email, password);
       if (acessToken) {
         setUser(createdUser);
         setStep(2);
       }
     }
-    authController.setShowToast(true);
+    // authController.setShowToast(true);
   };
 
   const handlePhotoUpload = async (e: React.FormEvent) => {
@@ -111,7 +111,7 @@ export default function SignupPage() {
       balance: amountStringToNumber(accountBalance as string),
     });
 
-    if (account) {
+    if (account && token) {
       router.push("/dashboard");
     }
   };
