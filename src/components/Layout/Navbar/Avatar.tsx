@@ -2,15 +2,15 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { authController } from "@/controllers/AuthController";
-import { useRouter } from "next/navigation";
 import { userController } from "@/controllers/UserController";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Avatar() {
   const [open, setOpen] = useState(false);
   const [avatarImage, setAvatarImage] = useState("/user.png")
-  const router = useRouter();
+
   const ref = useRef<HTMLDivElement>(null);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const getImage = async () => {
@@ -39,8 +39,7 @@ export function Avatar() {
   }, []);
 
   const handleLogout = () => {
-    authController.logout();
-    router.push("/login");
+    logout();
     setOpen(false);
   };
 

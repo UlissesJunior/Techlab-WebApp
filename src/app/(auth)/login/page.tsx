@@ -5,26 +5,35 @@ import { useRouter } from 'next/navigation';
 import DialogInput from '@/components/UI/DialogInput';
 import DialogButton from '@/components/UI/DialogButton';
 import Link from 'next/link';
-import { authController } from '@/controllers/AuthController';
-import { apiService } from '@/services/ApiService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const token = authController.getValidToken();
-    if (token) {
-      apiService.setToken(token);
-      router.push("/dashboard");
+    if (isAuthenticated) {
+      router.push('/dashboard');
     }
-  }, []);
+  }, [isAuthenticated]);
+
+  //ERRO DO ULTIMO COMMIT
+  //-------------------------
+  // useEffect(() => {
+  //   const token = authController.getValidToken();
+  //   if (token) {
+  //     apiService.setToken(token);
+  //     router.push("/dashboard");
+  //   }
+  // }, []);
+  //-------------------------
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const token = await authController.login(email, password);
+    const token = await login(email, password);
     if (token) {
       router.push('/dashboard');
     }
